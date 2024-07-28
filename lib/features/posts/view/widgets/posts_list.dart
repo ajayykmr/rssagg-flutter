@@ -4,54 +4,66 @@ import 'package:flutter/material.dart';
 
 class PostsList extends StatelessWidget {
   final List<Post> posts;
+
   const PostsList({super.key, required this.posts});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-
       shrinkWrap: false,
-      itemCount: 10,
-
+      itemCount: posts.length,
       itemBuilder: (context, index) {
+        final post = posts[index];
+        final date = posts[index].publishedAt;
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(
-                        'https://avatars.githubusercontent.com/u/583231?v=4'),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Title',
-                          style: AppTextStyle.title2,
-                        ),
-                        Text(
-                          'Description',
-                          style: AppTextStyle.highlightedLabel1,
-                        ),
-                      ],
+              Expanded(
+                flex: 3,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 22,
+                      // backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/583231?v=4'),
+                      child: Text(
+                        (index + 1).toString(),
+                        style: AppTextStyle.highlightedLabel1,
+                      ),
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              post.title,
+                              style: AppTextStyle.title2,
+                            ),
+                            Text(
+                              post.description.toString(),
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyle.label1,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text("Date", style: AppTextStyle.label1),
-                  Text("Feed Name", style: AppTextStyle.label1,),
-                ],
+              Expanded(
+                flex: 1,
+                child: Text(
+                  "${date.day}/${date.month}/${date.year}",
+                  style: AppTextStyle.label1,
+                  textAlign: TextAlign.end,
+                ),
               ),
-
             ],
           ),
         );

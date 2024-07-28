@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rssagg_flutter/theme/colors.dart';
 import 'package:rssagg_flutter/theme/textstyle.dart';
 
@@ -17,7 +18,6 @@ class AppTheme {
       onSurface: AppColor.textColorPrimary,
     ),
     scaffoldBackgroundColor: AppColor.scaffoldBackground,
-
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle().copyWith(
         textStyle: WidgetStateProperty.all(AppTextStyle.heading3),
@@ -38,10 +38,17 @@ class AppTheme {
       ),
     ),
     appBarTheme: const AppBarTheme(
+
       titleTextStyle: AppTextStyle.title1,
       backgroundColor: AppColor.scaffoldBackground,
       elevation: 0,
+      scrolledUnderElevation: 0,
       centerTitle: true,
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColor.scaffoldBackground,
+        statusBarColor: AppColor.scaffoldBackground,
+        systemNavigationBarDividerColor: AppColor.scaffoldBackground,
+      ),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColor.blue,
@@ -50,6 +57,5 @@ class AppTheme {
       color: AppColor.secondary,
       elevation: 0,
     ),
-
   );
 }

@@ -21,4 +21,4 @@ final class AuthFailure extends AuthState{
 //state where user is being authenticated
 final class AuthLoading extends AuthState{}
 
-final class AuthUserNotLoggedIn extends AuthState{}
+final class AuthUserLoggedOut extends AuthState{}

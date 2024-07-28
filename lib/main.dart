@@ -3,13 +3,13 @@ import 'package:rssagg_flutter/app_bloc_observer.dart';
 import 'package:rssagg_flutter/features/auth/data/data_provider/auth_data_provider.dart';
 import 'package:rssagg_flutter/features/auth/data/data_provider/current_user_data_provider.dart';
 import 'package:rssagg_flutter/features/auth/view/pages/sign_in_screen.dart';
+import 'package:rssagg_flutter/features/posts/view/pages/posts_screen.dart';
 import 'package:rssagg_flutter/theme/theme.dart';
 import 'features/auth/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'features/auth/data/repository/auth_repository.dart';
 import 'features/auth/data/repository/current_user_repository.dart';
-import 'features/feeds/view/pages/feeds_screen.dart';
 import 'splash_screen.dart';
 
 void main() async {
@@ -33,43 +33,37 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) {
-              final authBloc = AuthBloc(
-                authRepository: context.read<AuthRepository>(),
-                currentUserRepository: context.read<CurrentUserRepository>(),
-              );
-              authBloc.add(AuthStarted());
-              return authBloc;
-            }
-          ),
-
+          BlocProvider(create: (context) {
+            final authBloc = AuthBloc(
+              authRepository: context.read<AuthRepository>(),
+              currentUserRepository: context.read<CurrentUserRepository>(),
+            );
+            authBloc.add(AuthStarted());
+            return authBloc;
+          }),
         ],
         child: MaterialApp(
-            title: 'MyApp',
-            theme: AppTheme.darkTheme,
-            home: BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) {
-                if (state is AuthSuccess) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const FeedsScreen(),
-                    ),
-                  );
-                }
-
-                if (state is AuthUserNotLoggedIn) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const SignInScreen(),
-                    ),
-                  );
-                }
-              },
-
-
-              child: const SplashScreen(),
-            )
+          title: 'MyApp',
+          theme: AppTheme.darkTheme,
+          home: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthSuccess) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const PostsScreen(),
+                  ),
+                );
+              }
+              if (state is AuthUserLoggedOut) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const SignInScreen(),
+                  ),
+                );
+              }
+            },
+            child: const SplashScreen(),
+          ),
         ),
       ),
     );

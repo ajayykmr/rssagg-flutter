@@ -63,4 +63,62 @@ class FeedsDataProvider {
       rethrow;
     }
   }
+
+  Future<void> followFeed(String feedID) async {
+    try {
+      final res = await http.post(
+        headers: getAuthHeader(authToken),
+        Uri.parse('$BASE_URL/feed-follows'),
+        body: jsonEncode({
+          'feed_id': feedID,
+        }),
+      );
+
+      if (res.statusCode != 201) {
+        throw Exception(res.body);
+      }
+    } catch(e) {
+      rethrow;
+    }
+  }
+
+  Future<void> unFollowFeed(String feedID) async {
+    try {
+      final res = await http.delete(
+        headers: getAuthHeader(authToken),
+        Uri.parse('$BASE_URL/feed-follows/$feedID'),
+      );
+
+      if (res.statusCode != 200) {
+        throw Exception(res.body);
+      }
+    } catch(e) {
+      rethrow;
+    }
+  }
+
+  Future<List<FeedFollow>> getUserFeedFollows() async {
+    try {
+      final res = await http.get(
+        headers: getAuthHeader(authToken),
+        Uri.parse('$BASE_URL/feed-follows'),
+      );
+
+      if (res.statusCode != 200) {
+        throw Exception(res.body);
+      }
+
+      final feeds = res.body;
+      final feedsJson = jsonDecode(feeds) as Map<String, dynamic>;
+
+      final List<FeedFollow> list =
+      feedsJson['feed_follows'].map<FeedFollow>((feedFollow) => FeedFollow.fromJson(feedFollow)).toList();
+
+
+
+      return list;
+    } catch(e) {
+      rethrow;
+    }
+  }
 }

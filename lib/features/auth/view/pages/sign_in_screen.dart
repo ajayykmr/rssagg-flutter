@@ -5,7 +5,6 @@ import 'package:rssagg_flutter/common/utils/snackbar.dart';
 import 'package:rssagg_flutter/common/widgets/appbar.dart';
 import 'package:rssagg_flutter/common/widgets/loading_indicator.dart';
 import 'package:rssagg_flutter/common/widgets/text_field.dart';
-import 'package:rssagg_flutter/features/posts/view/pages/posts_screen.dart';
 import 'package:rssagg_flutter/theme/theme.dart';
 import '../../bloc/auth_bloc.dart';
 
@@ -49,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
-        appBar: const MyAppBar(),
+        appBar: MyAppBar(context: context, ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),

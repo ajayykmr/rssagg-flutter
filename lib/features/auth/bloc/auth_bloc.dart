@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rssagg_flutter/features/auth/data/repository/auth_repository.dart';
@@ -29,9 +27,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      currentUserRepository.logoutCurrentUser();
+      await currentUserRepository.logoutCurrentUser();
+      emit(AuthUserLoggedOut());
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthUserLoggedOut());
     }
   }
 
@@ -71,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthSuccess(user));
     } catch (e) {
       print(e);
-      emit(AuthUserNotLoggedIn());
+      emit(AuthUserLoggedOut());
     }
 
   }

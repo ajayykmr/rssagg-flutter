@@ -9,7 +9,6 @@ final class AllFeedsLoading extends AllFeedsState {}
 
 final class AllFeedsLoaded extends AllFeedsState {
   final List<Feed> feeds;
-
   AllFeedsLoaded(this.feeds);
 }
 

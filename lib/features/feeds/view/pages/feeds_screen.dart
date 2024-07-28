@@ -4,6 +4,7 @@ import 'package:rssagg_flutter/common/utils/bottom_sheet.dart';
 import 'package:rssagg_flutter/common/widgets/appbar.dart';
 import 'package:rssagg_flutter/common/widgets/loading_indicator.dart';
 import 'package:rssagg_flutter/features/auth/bloc/auth_bloc.dart';
+import 'package:rssagg_flutter/features/feeds/bloc/feed_follows/feed_follows_bloc.dart';
 import 'package:rssagg_flutter/features/feeds/data/data_provider/feeds_data_provider.dart';
 import 'package:rssagg_flutter/features/feeds/data/repository/feeds_repository.dart';
 import 'package:rssagg_flutter/theme/textstyle.dart';
@@ -22,6 +23,7 @@ class FeedsScreen extends StatefulWidget {
 class _FeedsScreenState extends State<FeedsScreen> {
   AllFeedsBloc? feedsBloc;
   CreateFeedBloc? createFeedBloc;
+  FeedFollowsBloc? feedFollowsBloc;
 
   @override
   void initState() {
@@ -31,20 +33,24 @@ class _FeedsScreenState extends State<FeedsScreen> {
         .state;
 
     if (authState is AuthSuccess) {
-      feedsBloc =
-          AllFeedsBloc(
-              FeedsRepository(FeedsDataProvider(authState.user.token)));
+      final _feedsDataProvider = FeedsDataProvider(authState.user.token);
+      final _feedsRepository = FeedsRepository(_feedsDataProvider);
+
+      feedsBloc = AllFeedsBloc(_feedsRepository);
+      createFeedBloc = CreateFeedBloc(_feedsRepository);
+      feedFollowsBloc = FeedFollowsBloc(_feedsRepository);
+
       feedsBloc?.add(FetchAllFeedsEvent());
-
-      createFeedBloc = CreateFeedBloc(
-          FeedsRepository(FeedsDataProvider(authState.user.token)));
+      feedFollowsBloc?.add(FetchFeedFollowsEvent());
     }
-
   }
 
   @override
   void dispose() {
     feedsBloc?.close();
+    createFeedBloc?.close();
+    feedFollowsBloc?.close();
+
     super.dispose();
   }
 
@@ -68,7 +74,8 @@ class _FeedsScreenState extends State<FeedsScreen> {
         ),
       ],
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: MyAppBar(
+          context: context,
           title: "Feeds",
         ),
         body: Padding(
@@ -82,7 +89,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
                     'Feeds',
                     style: AppTextStyle.title1,
                   ),
-                  Text("Created At", style: AppTextStyle.label1),
+                  Text("Follow", style: AppTextStyle.label1),
                 ],
               ),
               const SizedBox(
@@ -94,7 +101,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
                     if (state is AllFeedsLoading) {
                       return const Center(child: LoadingIndicator());
                     } else if (state is AllFeedsLoaded) {
-                      return FeedsList(feeds: state.feeds);
+                      return FeedsList(feeds: state.feeds, feedFollowsBloc: feedFollowsBloc!);
                     } else if (state is AllFeedsError) {
                       return Center(child: Text(state.error));
                     }
