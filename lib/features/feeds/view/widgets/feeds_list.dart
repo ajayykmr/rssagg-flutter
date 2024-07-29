@@ -3,15 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rssagg_flutter/common/widgets/loading_indicator.dart';
 import 'package:rssagg_flutter/models/models.dart';
 import 'package:rssagg_flutter/theme/theme.dart';
-
 import '../../bloc/feed_follows/feed_follows_bloc.dart';
 
 class FeedsList extends StatelessWidget {
   final List<Feed> feeds;
-  final FeedFollowsBloc feedFollowsBloc;
 
-  const FeedsList(
-      {super.key, required this.feeds, required this.feedFollowsBloc});
+  const FeedsList({super.key, required this.feeds});
 
   @override
   Widget build(BuildContext context) {
@@ -59,36 +56,42 @@ class FeedsList extends StatelessWidget {
                   ],
                 ),
               ),
-              BlocBuilder(
-                bloc: feedFollowsBloc,
+              BlocBuilder<FeedFollowsBloc, FeedFollowsState>(
                 builder: (context, state) {
-                  if (state is FeedFollowsLoading) {
+                  final feedFollowsBloc =
+                      BlocProvider.of<FeedFollowsBloc>(context);
+
+
+                  if (state is FeedFollowsLoading){
                     return LoadingIndicator(
                       size: 15,
                     );
                   }
+                  if (state is FeedFollowsError) {
+                    //error
+                    return IconButton(
+                      onPressed: () {
+                        feedFollowsBloc.add(FetchFeedFollowsEvent());
+                      },
+                      icon: Icon(
+                        Icons.refresh_rounded,
+                        size: 20,
+                      ),
+                    );
+                  }
 
                   if (state is FeedFollowsLoaded) {
-                    final List<FeedFollow> feedFollowList= state.feedFollows;
-                    bool following = false;
-                    int ind = 0;
-
-                    for(int i=0;i<feedFollowList.length;i++){
-                      if (feedFollowList[i].feedId==feed.id){
-                        following=true;
-                        ind = i;
-                        break;
-                      }
-                    }
+                    //feedID, feedFollowID
+                    final feedFollowMap = state.feedFollows;
+                    bool following = feedFollowMap.containsKey(feed.id);
 
                     return IconButton(
                       onPressed: () {
                         if (following) {
-                          feedFollowsBloc.add(UnFollowFeedEvent(feedFollowList[ind].id));
-                          feedFollowsBloc.add(FetchFeedFollowsEvent());
+                          feedFollowsBloc
+                              .add(UnFollowFeedEvent(feedFollowMap[feed.id]!));
                         } else {
                           feedFollowsBloc.add(FollowFeedEvent(feed.id));
-                          feedFollowsBloc.add(FetchFeedFollowsEvent());
                         }
                       },
                       icon: Icon(
@@ -100,20 +103,16 @@ class FeedsList extends StatelessWidget {
                       ),
                     );
                   }
-
-                  //error
                   return IconButton(
-                    onPressed: () {
-                      feedFollowsBloc.add(FetchFeedFollowsEvent());
-                    },
+                    onPressed: () {},
                     icon: Icon(
-                      Icons.refresh_rounded,
+                      Icons.favorite_border_rounded,
                       size: 20,
+                      color: Colors.grey,
                     ),
                   );
-
                 },
-              ),
+              )
             ],
           ),
         );

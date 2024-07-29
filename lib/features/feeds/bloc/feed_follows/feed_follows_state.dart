@@ -8,8 +8,8 @@ final class FeedFollowsInitial extends FeedFollowsState {}
 final class FeedFollowsLoading extends FeedFollowsState {}
 
 final class FeedFollowsLoaded extends FeedFollowsState {
-  //set of feed IDs
-  final List<FeedFollow> feedFollows;
+  //map [feedID][FeedFollowID]
+  final Map<String, String> feedFollows;
   FeedFollowsLoaded(this.feedFollows);
 }
 
@@ -17,3 +17,11 @@ final class FeedFollowsError extends FeedFollowsState {
   final String message;
   FeedFollowsError(this.message);
 }
+
+final class FollowButtonError extends FeedFollowsState {
+  final String message;
+  FollowButtonError(this.message);
+}
+
+//reload feed after follow button pressed
+final class FeedFollowsReloading extends FeedFollowsState {}

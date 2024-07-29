@@ -16,6 +16,7 @@ class FeedFollowsBloc extends Bloc<FeedFollowsEvent, FeedFollowsState> {
     on<FetchFeedFollowsEvent>(_fetchFeedFollows);
     on<FollowFeedEvent>(_followFeed);
     on<UnFollowFeedEvent>(_unFollowFeed);
+    on<ReloadFeedFollowsEvent>(_reloadFeedFollows);
   }
 
   void _fetchFeedFollows(FetchFeedFollowsEvent event, Emitter<FeedFollowsState> emit) async {
@@ -23,9 +24,14 @@ class FeedFollowsBloc extends Bloc<FeedFollowsEvent, FeedFollowsState> {
     try {
       final feedFollows = await _feedsRepository.getUserFeedFollows();
 
-      // Set<String> feedsSet = feedFollows.map((e) => e.feedId).toSet();
 
-      emit(FeedFollowsLoaded(feedFollows));
+      //feedID, feedFollowsID
+      Map<String, String> feedFollowsMap = {};
+      for(int i=0;i<feedFollows.length;i++){
+        feedFollowsMap[feedFollows[i].feedId] = feedFollows[i].id;
+      }
+      emit(FeedFollowsLoaded(feedFollowsMap));
+
     } catch (e) {
       print(e);
       emit(FeedFollowsError(e.toString()));
@@ -35,17 +41,39 @@ class FeedFollowsBloc extends Bloc<FeedFollowsEvent, FeedFollowsState> {
   void _followFeed(FollowFeedEvent event, Emitter<FeedFollowsState> emit) async {
     try {
       await _feedsRepository.followFeed(event.feedId);
+      add(ReloadFeedFollowsEvent());
     } catch (e) {
       print(e);
-      emit(FeedFollowsError(e.toString()));
+      emit(FollowButtonError(e.toString()));
     }
   }
 
   Future<void> _unFollowFeed(UnFollowFeedEvent event, Emitter<FeedFollowsState> emit) async {
     try {
-      await _feedsRepository.unfollowFeed(event.feedId);
+      await _feedsRepository.unfollowFeed(event.feedFollowId);
+      add(ReloadFeedFollowsEvent());
     } catch (e) {
       print(e);
+      emit(FollowButtonError(e.toString()));
+    }
+  }
+
+
+
+  Future<void> _reloadFeedFollows(ReloadFeedFollowsEvent event, Emitter<FeedFollowsState> emit) async {
+    try {
+      final newFeedFollows = await _feedsRepository.getUserFeedFollows();
+
+      //feedID, feedFollowsID
+      Map<String, String> newMap = {};
+      for(int i=0;i<newFeedFollows.length;i++){
+        newMap[newFeedFollows[i].feedId] = newFeedFollows[i].id;
+      }
+      emit(FeedFollowsLoaded(newMap));
+      // emit(FeedFollowsLoaded(map));
+    } catch (e) {
+      print(e);
+      emit(FeedFollowsError(e.toString()));
     }
   }
 }

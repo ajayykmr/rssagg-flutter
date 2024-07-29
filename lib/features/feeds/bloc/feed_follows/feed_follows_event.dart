@@ -11,7 +11,8 @@ final class FollowFeedEvent extends FeedFollowsEvent {
 }
 
 final class UnFollowFeedEvent extends FeedFollowsEvent {
-  final String feedId;
-  UnFollowFeedEvent(this.feedId);
+  final String feedFollowId;
+  UnFollowFeedEvent(this.feedFollowId);
 }
 
+final class ReloadFeedFollowsEvent extends FeedFollowsEvent {}

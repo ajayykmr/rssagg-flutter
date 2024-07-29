@@ -64,9 +64,9 @@ class FeedsRepository {
       rethrow;
     }
   }
-  Future<void> unfollowFeed(String feedId) async {
+  Future<void> unfollowFeed(String feedFollowId) async {
     try {
-      await feedsDataProvider.unFollowFeed(feedId);
+      await feedsDataProvider.unFollowFeed(feedFollowId);
     } catch (e) {
       rethrow;
     }

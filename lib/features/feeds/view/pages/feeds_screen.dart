@@ -72,69 +72,86 @@ class _FeedsScreenState extends State<FeedsScreen> {
         BlocProvider(
           create: (context) => createFeedBloc!,
         ),
+        BlocProvider(create: (context) => feedFollowsBloc!,)
       ],
-      child: Scaffold(
-        appBar: MyAppBar(
-          context: context,
-          title: "Feeds",
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
-          child: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Feeds',
-                    style: AppTextStyle.title1,
-                  ),
-                  Text("Follow", style: AppTextStyle.label1),
-                ],
+      child: BlocListener<FeedFollowsBloc, FeedFollowsState>(
+        listener: (context, state) {
+          if (state is FollowButtonError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: BlocBuilder<AllFeedsBloc, AllFeedsState>(
-                  builder: (context, state) {
-                    if (state is AllFeedsLoading) {
-                      return const Center(child: LoadingIndicator());
-                    } else if (state is AllFeedsLoaded) {
-                      return FeedsList(feeds: state.feeds, feedFollowsBloc: feedFollowsBloc!);
-                    } else if (state is AllFeedsError) {
-                      return Center(child: Text(state.error));
-                    }
-                    return const Center(
-                      child: Text("No feeds available"),
-                    );
-                  },
+            );
+          }
+        },
+        child: Scaffold(
+          appBar: MyAppBar(
+            context: context,
+            title: "Feeds",
+          ),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+            child: Column(
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Feeds',
+                      style: AppTextStyle.title1,
+                    ),
+                    Text("Follow", style: AppTextStyle.label1),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          showMyBottomSheet(context, CreateFeedBottomSheet(
-                            createFeedBloc: createFeedBloc!,
-                          ));
-                        },
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Add Feed "),
-                            Icon(Icons.add_rounded)
-                          ],
-                        )),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: BlocBuilder<AllFeedsBloc, AllFeedsState>(
+                    builder: (context, state) {
+                      if (state is AllFeedsLoading) {
+                        return const Center(child: LoadingIndicator());
+                      } else if (state is AllFeedsLoaded) {
+                        return FeedsList(feeds: state.feeds);
+                      } else if (state is AllFeedsError) {
+                        return Center(child: Text(state.error));
+                      }
+                      return const Center(
+                        child: Text("No feeds available"),
+                      );
+                    },
                   ),
-                ],
-              )
-            ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () {
+                            //FOR BOTTOM SHEETS, you need to pass the bloc directly as contructor, this is the most simple and easy way
+                            //The context in the bottom sheet is different from the context in the parent widget
+
+                            //or wrap the build method of bottom sheet with BuildProvider.value and pass bloc as value
+
+                            showMyBottomSheet(context, CreateFeedBottomSheet(
+                              createFeedBloc: createFeedBloc!,
+                            ));
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Add Feed "),
+                              Icon(Icons.add_rounded)
+                            ],
+                          )),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

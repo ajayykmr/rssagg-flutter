@@ -82,11 +82,11 @@ class FeedsDataProvider {
     }
   }
 
-  Future<void> unFollowFeed(String feedID) async {
+  Future<void> unFollowFeed(String feedFollowId) async {
     try {
       final res = await http.delete(
         headers: getAuthHeader(authToken),
-        Uri.parse('$BASE_URL/feed-follows/$feedID'),
+        Uri.parse('$BASE_URL/feed-follows/$feedFollowId'),
       );
 
       if (res.statusCode != 200) {

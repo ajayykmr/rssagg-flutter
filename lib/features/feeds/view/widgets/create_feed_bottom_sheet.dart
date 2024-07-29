@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rssagg_flutter/common/widgets/loading_indicator.dart';
 import 'package:rssagg_flutter/common/widgets/text_field.dart';
 import 'package:rssagg_flutter/features/auth/bloc/auth_bloc.dart';
+import 'package:rssagg_flutter/features/feeds/bloc/all_feeds/all_feeds_bloc.dart';
 import 'package:rssagg_flutter/theme/theme.dart';
 import '../../bloc/create_feed/create_feed_bloc.dart';
 
@@ -83,6 +84,9 @@ class _CreateFeedBottomSheetState extends State<CreateFeedBottomSheet> {
                             feedName: feedNameController.text,
                             feedUrl: feedUrlController.text,
                           ));
+
+                          final feedBloc = context.read<AllFeedsBloc>();
+                          feedBloc.add(FetchAllFeedsEvent());
                         },
                         style: Theme.of(context)
                             .elevatedButtonTheme
