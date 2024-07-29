@@ -25,6 +25,7 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   void initState() {
     super.initState();
+    
     final authState = context
         .read<AuthBloc>()
         .state;
@@ -47,7 +48,6 @@ class _PostsScreenState extends State<PostsScreen> {
     if (postsBloc == null) {
       return const Center(child: Text("No posts available"));
     }
-
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUserLoggedOut){

@@ -74,16 +74,39 @@ class _FeedsScreenState extends State<FeedsScreen> {
           create: (context) => feedFollowsBloc!,
         )
       ],
-      child: BlocListener<FeedFollowsBloc, FeedFollowsState>(
-        listener: (context, state) {
-          if (state is FollowButtonError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-              ),
-            );
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AllFeedsBloc, AllFeedsState>(
+            listener: (context, state) {
+              if (state is AllFeedsError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<FeedFollowsBloc, FeedFollowsState>(
+            listener: (context, state) {
+              if (state is FeedFollowsError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
+              if (state is FollowButtonError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
+
+            },
+          ),
+        ],
         child: Scaffold(
           appBar: MyAppBar(
             context: context,

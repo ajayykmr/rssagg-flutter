@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rssagg_flutter/features/feeds/data/repository/feeds_repository.dart';
-import 'package:rssagg_flutter/models/models.dart';
 
 part 'feed_follows_event.dart';
 part 'feed_follows_state.dart';
@@ -70,7 +69,6 @@ class FeedFollowsBloc extends Bloc<FeedFollowsEvent, FeedFollowsState> {
         newMap[newFeedFollows[i].feedId] = newFeedFollows[i].id;
       }
       emit(FeedFollowsLoaded(newMap));
-      // emit(FeedFollowsLoaded(map));
     } catch (e) {
       print(e);
       emit(FeedFollowsError(e.toString()));

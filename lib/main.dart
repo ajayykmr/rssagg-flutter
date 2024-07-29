@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rssagg_flutter/app_bloc_observer.dart';
 import 'package:rssagg_flutter/features/auth/data/data_provider/auth_data_provider.dart';
 import 'package:rssagg_flutter/features/auth/data/data_provider/current_user_data_provider.dart';
@@ -22,6 +23,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: AppColor.scaffoldBackground,
+        statusBarColor: AppColor.scaffoldBackground,
+        systemNavigationBarDividerColor: AppColor.scaffoldBackground,
+      ),
+    );
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
