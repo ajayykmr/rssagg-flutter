@@ -46,3 +46,5 @@ app.*.map.json
 .fvm/
 
 *.g.dart
+.fvmrc
+devtools_options.yaml
