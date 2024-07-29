@@ -21,33 +21,31 @@ class FeedsScreen extends StatefulWidget {
 }
 
 class _FeedsScreenState extends State<FeedsScreen> {
-  AllFeedsBloc? feedsBloc;
+  AllFeedsBloc? allFeedsBloc;
   CreateFeedBloc? createFeedBloc;
   FeedFollowsBloc? feedFollowsBloc;
 
   @override
   void initState() {
     super.initState();
-    final authState = context
-        .read<AuthBloc>()
-        .state;
+    final authState = context.read<AuthBloc>().state;
 
     if (authState is AuthSuccess) {
       final _feedsDataProvider = FeedsDataProvider(authState.user.token);
       final _feedsRepository = FeedsRepository(_feedsDataProvider);
 
-      feedsBloc = AllFeedsBloc(_feedsRepository);
+      allFeedsBloc = AllFeedsBloc(_feedsRepository);
       createFeedBloc = CreateFeedBloc(_feedsRepository);
       feedFollowsBloc = FeedFollowsBloc(_feedsRepository);
 
-      feedsBloc?.add(FetchAllFeedsEvent());
+      allFeedsBloc?.add(FetchAllFeedsEvent());
       feedFollowsBloc?.add(FetchFeedFollowsEvent());
     }
   }
 
   @override
   void dispose() {
-    feedsBloc?.close();
+    allFeedsBloc?.close();
     createFeedBloc?.close();
     feedFollowsBloc?.close();
 
@@ -56,7 +54,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (feedsBloc == null || createFeedBloc == null) {
+    if (allFeedsBloc == null || createFeedBloc == null) {
       return const Scaffold(
         body: Center(
           child: Text("User not logged in"),
@@ -67,12 +65,14 @@ class _FeedsScreenState extends State<FeedsScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => feedsBloc!,
+          create: (context) => allFeedsBloc!,
         ),
         BlocProvider(
           create: (context) => createFeedBloc!,
         ),
-        BlocProvider(create: (context) => feedFollowsBloc!,)
+        BlocProvider(
+          create: (context) => feedFollowsBloc!,
+        )
       ],
       child: BlocListener<FeedFollowsBloc, FeedFollowsState>(
         listener: (context, state) {
@@ -135,9 +135,13 @@ class _FeedsScreenState extends State<FeedsScreen> {
 
                             //or wrap the build method of bottom sheet with BuildProvider.value and pass bloc as value
 
-                            showMyBottomSheet(context, CreateFeedBottomSheet(
-                              createFeedBloc: createFeedBloc!,
-                            ));
+                            showMyBottomSheet(
+                              context,
+                              CreateFeedBottomSheet(
+                                createFeedBloc: createFeedBloc!,
+                                allFeedsBloc: allFeedsBloc!,
+                              ),
+                            );
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
