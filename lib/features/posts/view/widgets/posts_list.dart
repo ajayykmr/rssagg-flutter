@@ -32,6 +32,7 @@ class PostsList extends StatelessWidget {
                   child: Row(
                     children: [
                       CircleAvatar(
+                        backgroundColor: AppColor.secondary,
                         radius: 22,
                         // backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/583231?v=4'),
                         child: Text(

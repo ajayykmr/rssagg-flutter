@@ -12,17 +12,17 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData.dark().copyWith(
 
-    colorScheme: const ColorScheme.dark(
-      primary: AppColor.secondary,
-      secondary: AppColor.primary,
-      surface: AppColor.secondary,
-      onSurface: AppColor.textColorPrimary,
+    brightness: Brightness.dark,
+    primaryColor: AppColor.primary,
+    colorScheme: ColorScheme.dark(
+      primary: AppColor.primary,
+      secondary: AppColor.secondary,
     ),
     scaffoldBackgroundColor: AppColor.scaffoldBackground,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle().copyWith(
         textStyle: WidgetStateProperty.all(AppTextStyle.heading3),
-        backgroundColor: WidgetStateProperty.all(AppColor.blue),
+        backgroundColor: WidgetStateProperty.all(AppColor.primary),
         foregroundColor: WidgetStateProperty.all(AppColor.textColorPrimary),
         elevation: WidgetStateProperty.all(0),
         shape: WidgetStateProperty.all(
@@ -39,7 +39,6 @@ class AppTheme {
       ),
     ),
     appBarTheme: const AppBarTheme(
-
       titleTextStyle: AppTextStyle.title1,
       backgroundColor: AppColor.scaffoldBackground,
       elevation: 0,
@@ -51,12 +50,6 @@ class AppTheme {
         systemNavigationBarDividerColor: AppColor.scaffoldBackground,
       ),
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: AppColor.blue,
-    ),
-    cardTheme: const CardTheme(
-      color: AppColor.secondary,
-      elevation: 0,
-    ),
+
   );
 }

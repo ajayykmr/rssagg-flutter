@@ -133,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Text(
                         "Sign Up",
                         style: AppTextStyle.highlightedLabel1.copyWith(
-                          color: AppColor.blue,
+                          color: AppColor.primary,
                         ),
                       ),
                     ),

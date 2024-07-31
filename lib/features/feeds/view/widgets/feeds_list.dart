@@ -28,6 +28,7 @@ class FeedsList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
+                      backgroundColor: AppColor.secondary,
                       radius: 21,
                       child: Text(
                         (index + 1).toString(),

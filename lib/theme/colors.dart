@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppColor{
   AppColor._();
-  static const Color primary = Color(0xFF161622);
-  static const Color secondary = Color(0xFF1e1e2d);
 
   static const Color blue = Color(0xFF0066ff);
 
-  static const Color scaffoldBackground = primary;
-  static const Color containerBackground = secondary;
+  // static const Color primary = Color(0xFF2892D7);
+  static const Color primary = blue;
+  static const Color secondary = Color(0xFF1e1e2d);
+
+  static const Color scaffoldBackground = Color(0xFF161622);
 
   static const Color searchBarColor = Color(0xFF232533);
 
