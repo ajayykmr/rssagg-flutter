@@ -5,6 +5,7 @@ import 'package:rssagg_flutter/common/utils/snackbar.dart';
 import 'package:rssagg_flutter/common/widgets/appbar.dart';
 import 'package:rssagg_flutter/common/widgets/loading_indicator.dart';
 import 'package:rssagg_flutter/common/widgets/text_field.dart';
+import 'package:rssagg_flutter/features/auth/view/pages/sign_up_screen.dart';
 import 'package:rssagg_flutter/features/posts/view/pages/posts_screen.dart';
 import 'package:rssagg_flutter/theme/theme.dart';
 import '../../bloc/auth_bloc.dart';
@@ -56,7 +57,9 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
-        appBar: MyAppBar(context: context, ),
+        appBar: MyAppBar(
+          context: context,
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -74,6 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 38,
                 ),
                 MyTextFormField(
+                  controller: _emailController,
                   title: "Email Address",
                   leadingIcon: SvgPicture.asset(
                     Assets.email,
@@ -87,6 +91,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 21,
                 ),
                 MyTextFormField(
+                  controller: _passwordController,
+                  isPass: true,
                   title: "Password",
                   leadingIcon: SvgPicture.asset(
                     Assets.lock,
@@ -101,20 +107,46 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
-                    return Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (state is AuthLoading) {
-                          } else {
-                            _signIn(_emailController.text,
-                                _passwordController.text);
-                          }
-                        },
-                        child: state is AuthLoading
-                            ? const LoadingIndicator()
-                            : const Text("Sign In"),
-                      ),
+                    return Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (state is! AuthLoading) {
+                                _signIn(_emailController.text,
+                                    _passwordController.text);
+                              }
+                            },
+                            child: state is AuthLoading
+                                ? const LoadingIndicator()
+                                : const Text("Sign In"),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColor.scaffoldBackground,
+                                side: BorderSide(
+                                  color: AppColor.primary,
+                                  width: 1,
+
+                                )),
+                            onPressed: () {
+                              if (state is! AuthLoading) {
+                                _signIn("guest@gmail.com", "password");
+                              }
+                            },
+                            child: state is AuthLoading
+                                ? const LoadingIndicator()
+                                : const Text("Continue as Guest"),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),
@@ -129,7 +161,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       style: AppTextStyle.highlightedLabel1,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "Sign Up",
                         style: AppTextStyle.highlightedLabel1.copyWith(

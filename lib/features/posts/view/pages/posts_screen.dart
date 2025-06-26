@@ -71,12 +71,25 @@ class _PostsScreenState extends State<PostsScreen> {
                     children: [
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
+                          InkWell(
+
+                            onTap: () {
                               final auth = context.read<AuthBloc>();
                               auth.add(AuthLogoutRequested());
                             },
-                            icon: const Icon(Icons.logout_rounded),
+                            child: Column(
+                              children: [
+                                const Icon(Icons.logout_rounded),
+
+                                Text(
+                                  'Logout',
+                                  style: AppTextStyle.label1.copyWith(
+                                    fontSize: 12
+                                  ),
+                                ),
+                              ],
+
+                            ),
                           ),
                           Container(
                             padding: const EdgeInsets.only(left: 16),
@@ -90,7 +103,7 @@ class _PostsScreenState extends State<PostsScreen> {
                                   style: AppTextStyle.highlightedLabel2,
                                 ),
                                 Text(
-                                  "Ajay Kumar",
+                                  "AnonymousPenguin",
                                   style: AppTextStyle.title1,
                                 ),
                               ],
@@ -110,7 +123,7 @@ class _PostsScreenState extends State<PostsScreen> {
                               postsBloc?.add(FetchPostsEvent());
                             },);
                           },
-                          icon: Icon(Icons.feed_rounded))
+                          icon: const Icon(Icons.feed_rounded))
                     ],
                   ),
                   const SizedBox(

@@ -8,6 +8,7 @@ class User {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String name;
+
   final String apiKey;
   final String email;
   final String token;
@@ -22,10 +23,6 @@ class User {
     required this.token,
   });
 
-
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
-
-
-

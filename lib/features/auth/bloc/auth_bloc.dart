@@ -20,8 +20,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>(_onAuthLoginRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
     on<AuthStarted>(_onAppStarted);
-
+    on<AuthSignUpRequested>(_onAuthSignUpRequested);
   }
+
+
+  void _onAuthSignUpRequested(AuthSignUpRequested event, Emitter<AuthState> emit) async {
+
+    if (event.email.isEmpty || event.password.isEmpty) {
+      emit(AuthFailure("Email and password must not be empty"));
+      return;
+    }
+
+    emit(AuthLoading());
+    try {
+      final email = event.email;
+      final password = event.password;
+
+      final user = await authRepository.signUp(email, password);
+
+      try {
+        await currentUserRepository.saveCurrentUser(user);
+      } catch (e) {
+        print('Error saving current user: $e');
+      }
+
+      emit(AuthSuccess(user));
+    } catch (e) {
+      print('Sign up failed: $e');
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
 
   void _onAuthLogoutRequested(AuthLogoutRequested event,
       Emitter<AuthState> emit) async {
@@ -37,6 +66,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthLoginRequested(AuthLoginRequested event,
       Emitter<AuthState> emit) async {
 
+    if (event.email.isEmpty || event.password.isEmpty) {
+      emit(AuthFailure("Email and password must not be empty"));
+      return;
+    }
     emit(AuthLoading());
     try {
       final email = event.email;
@@ -72,6 +105,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print(e);
       emit(AuthUserLoggedOut());
     }
+
+
 
   }
 // @override

@@ -26,6 +26,7 @@ class AuthRepository{
       final res = await _userDataProvider.signUp(email, password);
       Map<String, dynamic> user = jsonDecode(res);
       print(user);
+      print(User.fromJson(user));
       return User.fromJson(user);
     } catch (e) {
       rethrow;

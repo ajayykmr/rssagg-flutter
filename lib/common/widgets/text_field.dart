@@ -7,7 +7,7 @@ class MyTextFormField extends StatefulWidget {
   final Widget? leadingIcon;
   final bool isPass;
   final TextInputType? keyboardType;
-  final TextEditingController? controller;
+  final TextEditingController controller;
 
   const MyTextFormField({
     super.key,
@@ -15,7 +15,7 @@ class MyTextFormField extends StatefulWidget {
     this.leadingIcon,
     this.isPass = false,
     this.keyboardType,
-    this.controller,
+    required this.controller,
   });
 
   @override
