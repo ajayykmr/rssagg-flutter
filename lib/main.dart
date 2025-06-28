@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           }),
         ],
         child: MaterialApp(
-          title: 'MyApp',
+          title: 'RssAggregator',
           theme: AppTheme.darkTheme,
           home: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
