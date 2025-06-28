@@ -55,86 +55,90 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: Scaffold(
         appBar: MyAppBar(context: context),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 53),
-                const Text("Sign Up", style: AppTextStyle.heading1),
-                const SizedBox(height: 38),
-                MyTextFormField(
-
-                  title: "Email Address",
-                  leadingIcon: SvgPicture.asset(
-                    Assets.email,
-                    colorFilter: const ColorFilter.mode(
-                        AppColor.textColorSecondary, BlendMode.srcIn),
-                  ),
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 21),
-                MyTextFormField(
-                  isPass: true,
-                  title: "Password",
-                  leadingIcon: SvgPicture.asset(
-                    Assets.lock,
-                    colorFilter: const ColorFilter.mode(
-                        AppColor.textColorSecondary, BlendMode.srcIn),
-                  ),
-                  controller: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                ),
-                const SizedBox(height: 40),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    return Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (state is! AuthLoading) {
-                            _signUp(
-                              _emailController.text,
-                              _passwordController.text,
-                            );
-                          }
-                        },
-                        child: state is AuthLoading
-                            ? const LoadingIndicator()
-                            : const Text("Sign Up"),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 29),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Already have an account? ",
-                      style: AppTextStyle.highlightedLabel1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop(); // Go back to sign in
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const SignInScreen(),
-                        //   ),
-                        // );
-                      },
-                      child: Text(
-                        "Sign In",
-                        style: AppTextStyle.highlightedLabel1.copyWith(
-                          color: AppColor.primary,
-                        ),
+                    const Text("Sign Up", style: AppTextStyle.heading1),
+                    const SizedBox(height: 38),
+                    MyTextFormField(
+
+                      title: "Email Address",
+                      leadingIcon: SvgPicture.asset(
+                        Assets.email,
+                        colorFilter: const ColorFilter.mode(
+                            AppColor.textColorSecondary, BlendMode.srcIn),
                       ),
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 21),
+                    MyTextFormField(
+                      isPass: true,
+                      title: "Password",
+                      leadingIcon: SvgPicture.asset(
+                        Assets.lock,
+                        colorFilter: const ColorFilter.mode(
+                            AppColor.textColorSecondary, BlendMode.srcIn),
+                      ),
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    const SizedBox(height: 40),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (state is! AuthLoading) {
+                                _signUp(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
+                              }
+                            },
+                            child: state is AuthLoading
+                                ? const LoadingIndicator()
+                                : const Text("Sign Up"),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 29),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Already have an account? ",
+                          style: AppTextStyle.highlightedLabel1,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop(); // Go back to sign in
+                            // Navigator.of(context).pushReplacement(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const SignInScreen(),
+                            //   ),
+                            // );
+                          },
+                          child: Text(
+                            "Sign In",
+                            style: AppTextStyle.highlightedLabel1.copyWith(
+                              color: AppColor.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

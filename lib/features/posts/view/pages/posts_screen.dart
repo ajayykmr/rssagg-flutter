@@ -72,7 +72,7 @@ class _PostsScreenState extends State<PostsScreen> {
                       Row(
                         children: [
                           InkWell(
-
+                            borderRadius: BorderRadius.circular(10),
                             onTap: () {
                               final auth = context.read<AuthBloc>();
                               auth.add(AuthLogoutRequested());
@@ -111,19 +111,30 @@ class _PostsScreenState extends State<PostsScreen> {
                           ),
                         ],
                       ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const FeedsScreen();
-                                },
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const FeedsScreen();
+                              },
+                            ),
+                          ).then((value) {
+                            postsBloc?.add(FetchPostsEvent());
+                          },);
+                        },
+                        child:  Column(
+                          children: [
+                            const Icon(Icons.feed_rounded),
+                            Text(
+                              'Feeds',
+                              style: AppTextStyle.label1.copyWith(
+                                  fontSize: 12
                               ),
-                            ).then((value) {
-                              postsBloc?.add(FetchPostsEvent());
-                            },);
-                          },
-                          icon: const Icon(Icons.feed_rounded))
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                   const SizedBox(

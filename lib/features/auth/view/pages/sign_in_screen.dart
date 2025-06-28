@@ -60,124 +60,129 @@ class _SignInScreenState extends State<SignInScreen> {
         appBar: MyAppBar(
           context: context,
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 53,
-                ),
-                const Text(
-                  "Sign In",
-                  style: AppTextStyle.heading1,
-                ),
-                const SizedBox(
-                  height: 38,
-                ),
-                MyTextFormField(
-                  controller: _emailController,
-                  title: "Email Address",
-                  leadingIcon: SvgPicture.asset(
-                    Assets.email,
-                    colorFilter: const ColorFilter.mode(
-                        AppColor.textColorSecondary, BlendMode.srcIn),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  // isPass: true,
-                ),
-                const SizedBox(
-                  height: 21,
-                ),
-                MyTextFormField(
-                  controller: _passwordController,
-                  isPass: true,
-                  title: "Password",
-                  leadingIcon: SvgPicture.asset(
-                    Assets.lock,
-                    colorFilter: const ColorFilter.mode(
-                        AppColor.textColorSecondary, BlendMode.srcIn),
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                  // isPass: true,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (state is! AuthLoading) {
-                                _signIn(_emailController.text,
-                                    _passwordController.text);
-                              }
-                            },
-                            child: state is AuthLoading
-                                ? const LoadingIndicator()
-                                : const Text("Sign In"),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColor.scaffoldBackground,
-                                side: BorderSide(
-                                  color: AppColor.primary,
-                                  width: 1,
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: SizedBox(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                                )),
-                            onPressed: () {
-                              if (state is! AuthLoading) {
-                                _signIn("guest@gmail.com", "password");
-                              }
-                            },
-                            child: state is AuthLoading
-                                ? const LoadingIndicator()
-                                : const Text("Continue as Guest"),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height: 29,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "I'm a new user. ",
-                      style: AppTextStyle.highlightedLabel1,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "Sign Up",
-                        style: AppTextStyle.highlightedLabel1.copyWith(
-                          color: AppColor.primary,
-                        ),
+                      const Text(
+                        "Sign In",
+                        style: AppTextStyle.heading1,
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 38,
+                      ),
+                      MyTextFormField(
+                        controller: _emailController,
+                        title: "Email Address",
+                        leadingIcon: SvgPicture.asset(
+                          Assets.email,
+                          colorFilter: const ColorFilter.mode(
+                              AppColor.textColorSecondary, BlendMode.srcIn),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        // isPass: true,
+                      ),
+                      const SizedBox(
+                        height: 21,
+                      ),
+                      MyTextFormField(
+                        controller: _passwordController,
+                        isPass: true,
+                        title: "Password",
+                        leadingIcon: SvgPicture.asset(
+                          Assets.lock,
+                          colorFilter: const ColorFilter.mode(
+                              AppColor.textColorSecondary, BlendMode.srcIn),
+                        ),
+                        keyboardType: TextInputType.visiblePassword,
+                        // isPass: true,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return Column(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (state is! AuthLoading) {
+                                      _signIn(_emailController.text,
+                                          _passwordController.text);
+                                    }
+                                  },
+                                  child: state is AuthLoading
+                                      ? const LoadingIndicator()
+                                      : const Text("Sign In"),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColor.scaffoldBackground,
+                                      side: const BorderSide(
+                                        color: AppColor.primary,
+                                        width: 1,
+
+                                      )),
+                                  onPressed: () {
+                                    if (state is! AuthLoading) {
+                                      _signIn("guest@gmail.com", "password");
+                                    }
+                                  },
+                                  child: state is AuthLoading
+                                      ? const LoadingIndicator()
+                                      : const Text("Continue as Guest"),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 29,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "I'm a new user. ",
+                            style: AppTextStyle.highlightedLabel1,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const SignUpScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Sign Up",
+                              style: AppTextStyle.highlightedLabel1.copyWith(
+                                color: AppColor.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
