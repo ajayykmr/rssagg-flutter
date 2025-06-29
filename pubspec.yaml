@@ -1,5 +1,5 @@
-name: rssagg_flutter
-description: "rssagg frontend"
+name: rssagg_flutter  #if you change this, then you need to change all import paths
+description: "rssync frontend"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

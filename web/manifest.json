@@ -1,11 +1,11 @@
 {
-    "name": "rssagg_flutter",
-    "short_name": "rssagg_flutter",
+    "name": "rssync_flutter",
+    "short_name": "rssync_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "rssagg frontend",
+    "description": "rssync frontend",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
